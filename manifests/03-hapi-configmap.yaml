@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: hapi-config
+ namespace: fhir-lab
+data:
+ application.yaml: |
+   spring:
+     datasource:
+       url: jdbc:postgresql://postgres:5432/hapi
+       username: ${POSTGRES_USER}
+       password: ${POSTGRES_PASSWORD}
+       driverClassName: org.postgresql.Driver
+     jpa:
+       properties:
+         hibernate:
+           dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
+   hapi:
+     fhir:
+       fhir_version: R4

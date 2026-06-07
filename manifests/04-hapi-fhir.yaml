@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: hapi-fhir
+ namespace: fhir-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hapi-fhir
+  template:
+    metadata:
+      labels:
+        app: hapi-fhir
+    spec:
+      containers:
+        - name: hapi-fhir
+          image: docker.io/hapiproject/hapi:v7.2.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - name: config
+              mountPath: /app/config/application.yaml
+              subPath: application.yaml
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
+          startupProbe:
+            httpGet:
+              path: /fhir/metadata
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /fhir/metadata
+              port: 8080
+            periodSeconds: 10
+            timeoutSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /fhir/metadata
+              port: 8080
+            periodSeconds: 30
+            timeoutSeconds: 10
+      volumes:
+        - name: config
+          configMap:
+            name: hapi-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hapi-fhir
+  namespace: fhir-lab
+spec:
+  selector:
+    app: hapi-fhir
+  ports:
+    - port: 8080
+      targetPort: 8080

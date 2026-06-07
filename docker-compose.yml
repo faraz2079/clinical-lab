@@ -1,0 +1,34 @@
+services: 
+  postgres: 
+    image: postgres:15
+    environment: 
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+      POSTGRES_DB:
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U hapi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      
+  hapi-fhir:
+    image: hapiproject/hapi:v7.2.0
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRES_USER: hapi
+      POSTGRES_PASSWORD: hapipassword
+      spring.datasource.url: jdbc:postgresql://postgres:5432/hapi
+      spring.datasource.username: hapi
+      spring.datasource.password: hapipassword
+      spring.datasource.driverClassName: org.postgresql.Driver
+      spring.jpa.properties.hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
+      hapi.fhir.fhir_version: R4
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres-data:        
