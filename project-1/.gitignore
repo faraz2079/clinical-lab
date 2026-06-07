@@ -1,0 +1,10 @@
+# python 
+venv/
+__pycache__/
+*.pyc
+
+# kubernetes secrets - never commit real credentials
+manifests/01-postgres-secret.yaml
+
+# OS
+.DS_Store
