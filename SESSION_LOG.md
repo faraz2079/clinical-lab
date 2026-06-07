@@ -51,4 +51,45 @@ Bundle loading into HAPI started but left running in background via
 
 ---
 
-## Session 2 — 
+## Session 2 — 2026-06-07
+
+### Accomplished
+
+- **Phase 3 (load synthetic data):** Debugged background nohup load — port-forward
+  had died silently, so all bundles failed. Re-ran load in foreground. One patient
+  (Ahmad985) hit a conflict from a prior partial attempt; 10/10 others loaded
+  successfully. Verified with `curl /fhir/Patient?_count=10` → `total: 10`.
+
+- **Phase 4 (Python FHIR client):** Built `client/fhir_client.py` with:
+  - `search_patients(**params)` — search by gender, name, birthdate
+  - `get_patient(patient_id)` — read by ID
+  - `create_observation(...)` — POST a new Observation with LOINC code referencing a Patient
+  - `get_bundle_entries(bundle)` — parse searchset Bundle entries
+  - Successfully created `Observation/12959` (systolic BP 118 mm[Hg]) for Patient/6552
+    and verified it via `GET /fhir/Observation/12959`
+
+- **Phase 5 (GitHub repo):** Restructured project into `~/clinical-lab/` with
+  per-project subdirectories. Created GitHub repo `clinical-lab` with:
+  - `main` branch: full directory structure + overview README
+  - `project-1` branch: project-1 files at root level (via `git subtree push`)
+  - `.gitignore` excluding `01-postgres-secret.yaml` (real credentials)
+  - `01-postgres-secret.yaml.example` committed as safe template
+  - `docker-compose.yml` for running HAPI + PostgreSQL without Kubernetes
+  - Rewrote `README.md` as a proper GitHub README (FHIR concepts, quick start,
+    both Docker Compose and K8s options, manifest structure, 5-project plan table)
+
+### Status at end of session
+
+**Project 1 complete.** All 5 phases done. Repo live on GitHub (`clinical-lab`,
+`project-1` branch). Old `~/fhir-lab/` directory removed.
+
+---
+
+### TODO — Next Session
+
+- [ ] **Project 2:** CI/CD + Helm chart for a medical microservice
+  - Containerize the Python FHIR client (Dockerfile)
+  - Write a Helm chart for it
+  - Set up GitHub Actions CI pipeline
+  - Deploy to K8s via the Helm chart
+
