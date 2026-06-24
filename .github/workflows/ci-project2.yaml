@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - project-2/**
+      - .github/workflows/ci-project2.yaml
 
 jobs:
   build:
