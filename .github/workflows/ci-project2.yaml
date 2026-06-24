@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - project-2/**
+      - project-2/app/**
+      - project-2/Dockerfile
       - .github/workflows/ci-project2.yaml
 
 jobs:
