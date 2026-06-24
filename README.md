@@ -53,5 +53,6 @@ curl http://localhost:5001/health
 
 ## CI Pipeline
 
-`.github/workflows/ci-project2.yaml` triggers on any push to `project-2/**`.
-Builds the Docker image and pushes it to `ghcr.io/faraz2079/fhir-client:latest`.
+`.github/workflows/ci-project2.yaml` triggers on pushes that change `project-2/app/**`,
+`project-2/Dockerfile`, or the workflow file itself. Builds the Docker image and pushes
+it to `ghcr.io/faraz2079/fhir-client:latest`.
