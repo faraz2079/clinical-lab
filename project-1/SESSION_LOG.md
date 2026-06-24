@@ -119,6 +119,8 @@ Bundle loading into HAPI started but left running in background via
   to `project-2/**`. Builds and pushes image to ghcr.io on every commit.
   Fixed two issues: typo in `actions/checkout`, then `write_package` permission denial
   (resolved by using a Classic PAT stored as `GHCR_TOKEN` secret).
+  Narrowed path filter to `project-2/app/**` and `project-2/Dockerfile` so README
+  edits don't trigger unnecessary image rebuilds.
 
 - **`project-2` branch:** Pushed project-2 subtree to its own branch on GitHub.
 
