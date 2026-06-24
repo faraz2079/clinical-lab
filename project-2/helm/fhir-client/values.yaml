@@ -1,0 +1,11 @@
+replicaCount: 1
+
+image: 
+  repository: ghcr.io/faraz2079/fhir-client
+  tag: latest
+  pullPolicy: Always
+
+service:
+  port: 5001
+
+fhirBaseUrl: http://hapi-fhir.fhir-lab.svc.cluster.local:8080/fhir
