@@ -93,3 +93,46 @@ Bundle loading into HAPI started but left running in background via
   - Set up GitHub Actions CI pipeline
   - Deploy to K8s via the Helm chart
 
+---
+
+## Session 3 — 2026-06-24
+
+### Accomplished
+
+- **Project 2 complete:** CI/CD + Helm chart for a medical microservice.
+
+- **Flask API:** Wrapped the Project 1 Python FHIR client in a Flask HTTP API (`main.py`)
+  with four endpoints: `GET /health`, `GET /patients`, `GET /patients/<id>`, `POST /observations`.
+  Fixed port conflict (5000 → 5001).
+
+- **Dockerfile:** Containerized the Flask app (`python:3.12-slim`). User wrote the Dockerfile
+  manually for learning. Image built and pushed to `ghcr.io/faraz2079/fhir-client:latest`.
+
+- **Helm chart:** Authored a full Helm chart (`helm/fhir-client/`) with `Chart.yaml`,
+  `values.yaml`, `templates/deployment.yaml`, `templates/service.yaml`. Includes
+  readiness/liveness probes on `/health` and `imagePullSecrets` for CRI-O.
+
+- **K8s deploy:** Deployed via `helm install`. Pod reached 1/1 Running. Verified
+  `GET /health`, `GET /patients?gender=male&_count=3` via port-forward.
+
+- **GitHub Actions CI:** Wrote `.github/workflows/ci-project2.yaml` — triggers on push
+  to `project-2/**`. Builds and pushes image to ghcr.io on every commit.
+  Fixed two issues: typo in `actions/checkout`, then `write_package` permission denial
+  (resolved by using a Classic PAT stored as `GHCR_TOKEN` secret).
+
+- **`project-2` branch:** Pushed project-2 subtree to its own branch on GitHub.
+
+### Status at end of session
+
+**Project 2 complete.** Flask FHIR API running in K8s, Helm chart authored, CI pipeline
+green. Repo has `main`, `project-1`, and `project-2` branches live on GitHub.
+
+---
+
+### TODO — Next Session
+
+- [ ] **Project 3:** DICOM + PACS on Kubernetes (Orthanc)
+  - Deploy Orthanc PACS to K8s
+  - Upload a DICOM file via DICOMweb
+  - Query and retrieve it
+
