@@ -1,0 +1,12 @@
+replicaCount: 1
+
+image: 
+  repository: docker.io/jodogne/orthanc-plugins
+  tag: latest
+  pullPolicy: Always
+
+service: 
+  port: 8042
+
+storage:
+  size: 5Gi
