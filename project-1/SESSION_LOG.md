@@ -138,3 +138,45 @@ green. Repo has `main`, `project-1`, and `project-2` branches live on GitHub.
   - Upload a DICOM file via DICOMweb
   - Query and retrieve it
 
+---
+
+## Session 4 — 2026-06-26
+
+### Accomplished
+
+- **Project 3 complete:** DICOM + PACS on Kubernetes (Orthanc).
+
+- **Orthanc deploy:** Deployed Orthanc (`jodogne/orthanc-plugins`) to K8s in `dicom-lab`
+  namespace via a raw manifest (Deployment + PVC 5Gi + Service on port 8042).
+  Default credentials: `orthanc:orthanc`. Verified with `curl /system`.
+
+- **DICOM file:** Generated a synthetic CT DICOM file using Python + pydicom
+  (`generate_dicom.py`) — 64x64 monochrome image with patient metadata.
+
+- **Upload + query:** Uploaded via `POST /instances`, queried back via `GET /studies`
+  and `GET /studies/{id}`. Full round-trip verified.
+
+- **DICOM client:** Wrote `dicom-client.py` — programmatic upload, study listing,
+  and instance count. Same pattern as `fhir_client.py` from project-1.
+
+- **Helm chart:** Authored `helm/orthanc/` with `Chart.yaml`, `values.yaml`,
+  `templates/deployment.yaml`, `templates/service.yaml`. Lint clean.
+
+- **`project-3` branch:** Pushed subtree to its own branch on GitHub.
+
+### Status at end of session
+
+**Project 3 complete.** Orthanc running in K8s, DICOM round-trip verified,
+Helm chart authored. Repo has `main`, `project-1`, `project-2`, `project-3` branches.
+
+---
+
+### TODO — Next Session
+
+- [ ] **Project 4:** Hardened K8s namespace for clinical workloads
+  - RBAC (roles, role bindings)
+  - NetworkPolicies
+  - Sealed Secrets
+  - Falco for runtime security
+  - DSGVO compliance considerations
+
