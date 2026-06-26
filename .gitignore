@@ -1,0 +1,3 @@
+venv/
+*.dcm
+project-1/manifests/01-postgres-secret.yaml
